@@ -1,3 +1,14 @@
 body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+#btn1{
+    border-radius: 5px;
+    border-color: rgb(0, 0, 0);
+    background-color: azure;
+    color: darkblue;
+}
+
+#btn1:hover{
+    background-color: rgb(186, 219, 219);
+}
