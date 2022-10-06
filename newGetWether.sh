@@ -1,23 +1,27 @@
 #!/bin/bash
 # First part
-#read -p "Enter City: " city
-#read -p "Enter State: " state
+read -p "Enter City: " city
+read -p "Enter State: " state
 
-city="hyderabad"
-state="Telangana"
+#city="hyderabad"
+#state="Telangana"
 
 front="http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=KgiMkd9HQ8IaIiLmQIt5gA5ADAXhRUKL&q="
 url="${front}${city}"
 
-#locID=$(curl -X GET $url | ./jq.exe --arg state "$state" '[.[] | select(.AdministrativeArea.LocalizedName==$state) | .Key][0]')
-#echo "Location ID: " $locID
-locID="202190"
+tempID=$(curl -X GET $url | ./jq.exe --arg state "$state" '[.[] | select(.AdministrativeArea.LocalizedName==$state) | .Key][0]')
+
+locID=$(echo $tempID | sed "s/\"//g")
+
+#locID="202190"
+echo "Location ID for ${city} is: " $locID
 
 # Second part
 # Make the url
 frontUrl="http://dataservice.accuweather.com/currentconditions/v1/"
 backUrl="?apikey=KgiMkd9HQ8IaIiLmQIt5gA5ADAXhRUKL&details=true"
 newUrl="${frontUrl}${locID}${backUrl}"
+
 echo $newUrl
 echo
 
