@@ -1,13 +1,32 @@
 #!/bin/bash
-read -p "Enter City: " city
-read -p "Enter State: " state
+# First part
+#read -p "Enter City: " city
+#read -p "Enter State: " state
 
-#city="hyderabad"
-#state="Telangana"
+city="hyderabad"
+state="Telangana"
 
 front="http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=KgiMkd9HQ8IaIiLmQIt5gA5ADAXhRUKL&q="
 url="${front}${city}"
 
-locID=$(curl -X GET $url | ./jq.exe --arg state "$state" '[.[] | select(.AdministrativeArea.LocalizedName==$state) | .Key][0]')
-echo "Location ID: " $locID
+#locID=$(curl -X GET $url | ./jq.exe --arg state "$state" '[.[] | select(.AdministrativeArea.LocalizedName==$state) | .Key][0]')
+#echo "Location ID: " $locID
+locID="202190"
 
+# Second part
+# Make the url
+frontUrl="http://dataservice.accuweather.com/currentconditions/v1/"
+backUrl="?apikey=KgiMkd9HQ8IaIiLmQIt5gA5ADAXhRUKL&details=true"
+newUrl="${frontUrl}${locID}${backUrl}"
+echo $newUrl
+echo
+
+currTemp=$(curl -X GET $newUrl | ./jq.exe '.[] | .Temperature.Metric.Value')
+windSpeed=$(curl -X GET $newUrl | ./jq.exe '.[] | .Wind.Speed.Metric.Value')
+
+echo
+echo "The current Temperature in ${city} is: " $currTemp
+echo
+
+echo "The Wind Speed is: " $windSpeed
+echo
